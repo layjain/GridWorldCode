@@ -69,7 +69,7 @@ class Grid(object):
 		ax.set_yticks(np.arange(0, self.H, 1))
 		plt.grid()
 		for c in self.coords:
-			plt.plot(c[0], c[1], color = self.color2str(self.color))
+			plt.plot(c[0], c[1], 's', color = self.color2str(self.colors[c]))
 		plt.plot(self.loc[0], self.loc[1],'ro', label = 'LOC')
 		plt.legend()
 		plt.title('STEP: '+str(self.num_steps))
