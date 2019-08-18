@@ -1,11 +1,15 @@
 class base_config():
-
+	#TRYOUT: the state fed to LSTM comprise of only 1 screen for DRQN unlike and then LSTM is unrolled
+	#....... We can feed a bunch of screens into LSTM as a single 'state' as done in DQN
 	reward_clipping = None
+	#TRYOUT: Changing the Networks
 	#TRYOUT: Clipping the Rewards
 	#TRYOUT: A function of Rewards
 	#TRYOUT: Removing repetition from sample_batch in replay_memory
 	#....... because over-repeating some episode can be a problem; Infact, what about in the very start?
+	#....... thats why train starts at 20K?
 	#TRYOUT: Variants as discussed in env_wrapper.py
+	#Note: Need to change hard-coded numbers in dqn.py based on no. of train steps
 	num_colors = 4
 	grid_dimensions = (10,10)
 	start_coords=(0,0) #Must be tuple-hashable
@@ -23,6 +27,7 @@ class base_config():
 	epsilon_decay_episodes_fraction=0.1
 	epsilon_decay_episodes = train_steps*epsilon_decay_episodes_fraction #This is a float
 	train_freq = 8
+	### TRYOUT: 8 was for Atari. Must change to a lower value?
 	update_freq = 10000
 	train_start = 20000
 	dir_save = "saved_session/"

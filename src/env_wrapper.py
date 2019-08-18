@@ -83,8 +83,10 @@ class Grid(object):
 class GridWorldWrapper(object):
 	
 	def __init__(self, config):
+		self.start_coords = config.start_coords
+		self.config = config
 		self.W, self.H = config.grid_dimensions
-		self.coords = config.start_coords
+		self.coords = self.start_coords
 		self.env = Grid(config)
 		#Let: 0 action means nothing
 

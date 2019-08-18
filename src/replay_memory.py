@@ -50,7 +50,7 @@ class DQNReplayMemory(ReplayMemory):
             return self.colors[indices, ...]
 
     def add(self, color, reward, action, terminal):
-        assert color.shape == (self.config.num_colors,)
+        assert len(color) == self.config.num_colors
 
         self.actions[self.current] = action
         self.rewards[self.current] = reward
@@ -101,7 +101,7 @@ class DRQNReplayMemory(ReplayMemory):
         self.terminals_out = np.empty((self.config.batch_size, self.config.min_history + self.config.states_to_update +1))
 
     def add(self, color, reward, action, terminal, t):
-        assert color.shape == (self.config.num_colors,)
+        assert len(color) == (self.config.num_colors)
 
         self.actions[self.current] = action
         self.rewards[self.current] = reward
@@ -123,8 +123,8 @@ class DRQNReplayMemory(ReplayMemory):
         return a, t, r
 
     def sample_batch(self):
-        ### we choose random (s, a, r, s, a) tuples from replay memory 
-        ### ... (where one state is [hist_len+states_to_update+1] observations)
+        ###(LJ) we choose random [(s, a, r,) sequences ] from replay memory 
+        ### ... (where one sequence is [hist_len+states_to_update+1] observations)
         assert self.count > self.config.min_history + self.config.states_to_update
 
         indices = []

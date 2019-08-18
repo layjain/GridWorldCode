@@ -5,7 +5,7 @@ class BaseAgent():
 
     def __init__(self, config):
         self.config = config
-        self.env_wrapper = GridWorldWrapper()
+        self.env_wrapper = GridWorldWrapper(config)
         self.rewards = 0
         self.epsilon = config.epsilon_start
         if config.reward_clipping == None:

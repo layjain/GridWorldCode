@@ -11,7 +11,7 @@ class DQNAgent(BaseAgent):
         super(DQNAgent, self).__init__(config)
         self.history = History(config)
         self.replay_memory = DQNReplayMemory(config)
-        self.net = DQN(self.env_wrapper.action_space.n, config)
+        self.net = DQN(4, config)
         self.net.build()
         self.net.add_summary(["average_reward", "average_loss", "average_q", "ep_max_reward", "ep_avg_reward","ep_min_reward", "ep_num_game", "learning_rate"], ["ep_rewards", "ep_actions"])
 
@@ -23,10 +23,11 @@ class DQNAgent(BaseAgent):
         if self.i < self.config.epsilon_decay_episodes:
             self.epsilon -= self.config.epsilon_decay
         if self.i % self.config.train_freq == 0 and self.i > self.config.train_start:
-            ### training starts only after train_start=20K steps, mem_size is 800K
+            #print('----> i',self.i)
+            ### training starts only after train_start=20K steps, mem_size is 800K, train_freq is 8,
             ### I guess thats why its okay to not worry about sampling with repititions
             state, action, reward, state_, terminal = self.replay_memory.sample_batch()
-            q, loss= self.net.train_on_batch_target(state, action, reward, state_, terminal, self.i)
+            q, loss = self.net.train_on_batch_target(state, action, reward, state_, terminal, self.i)
             ### self.i is passed to implement lr decay
             self.total_q += q
             self.total_loss += loss
@@ -135,7 +136,7 @@ class DQNAgent(BaseAgent):
         while i < episodes:
             #Chose Action:
             a = self.net.q_action.eval({
-                self.net.state : [self.history.get()/255.0]
+                self.net.state : [self.history.get()]
             }, session=self.net.sess)
             action = a[0]
             #Take Action
@@ -153,6 +154,6 @@ class DQNAgent(BaseAgent):
                 i += 1
                 self.env_wrapper.new_play_game()
                 for _ in range(self.config.history_len):
-                    screen = self.env_wrapper.screen
-                    self.history.add(screen)
+                    color = self.env_wrapper.color
+                    self.history.add(color)
         print([d, sum(d)/len(d)])
