@@ -10,12 +10,12 @@ class base_config():
 	#....... thats why train starts at 20K?
 	#TRYOUT: Variants as discussed in env_wrapper.py
 	#Note: Need to change hard-coded numbers in dqn.py based on no. of train steps
-	num_colors = 4
-	grid_dimensions = (10,10)
+	num_colors = 1000
+	grid_dimensions = (60,60)
 	start_coords=(0,0) #Must be tuple-hashable
 	grid_maker_random_seed = 0
-	min_reward = -10
-	max_reward = 10
+	min_reward = -0.3
+	max_reward = 1.0
 	reward_distribution = 'uniform'
 
 	train_steps = 10000000
