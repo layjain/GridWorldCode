@@ -14,7 +14,7 @@ class base_config():
 	grid_dimensions = (60,60)
 	start_coords=(0,0) #Must be tuple-hashable
 	grid_maker_random_seed = 0
-	min_reward = -0.3
+	min_reward = 0
 	max_reward = 1.0
 	reward_distribution = 'uniform'
 
