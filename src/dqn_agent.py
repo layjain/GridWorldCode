@@ -73,9 +73,10 @@ class DQNAgent(BaseAgent):
                 t += 1
             actions.append(action)
             total_reward += self.env_wrapper.reward
+            print(self.i,action,total_reward, self.env_wrapper.terminal)
             #total_reward, max_ep_reward, min_ep_reward, avg_ep_reward keep track of reward earned every self.config.test_step=5000 steps
             if self.i >= self.config.train_start:
-                if self.i % self.config.test_step == self.config.test_step -1:
+                if self.i % self.config.test_step == self.config.test_step +1:
                     avg_reward = total_reward / self.config.test_step
                     avg_loss = self.total_loss / self.update_count
                     avg_q = self.total_q / self.update_count

@@ -77,7 +77,7 @@ class Grid(object):
 
 	@property
 	def terminal(self):
-		return self.num_steps >= self.max_steps
+		return (self.num_steps+1) % self.max_steps == 0
 
 
 class GridWorldWrapper(object):
@@ -92,6 +92,7 @@ class GridWorldWrapper(object):
 
 	def new_game(self):
 		self.coords = self.config.start_coords
+		self.terminal=False
 		self.reward=0
 		self.action=0
 

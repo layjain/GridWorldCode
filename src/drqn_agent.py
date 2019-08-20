@@ -80,9 +80,10 @@ class DRQNAgent(BaseAgent):
                 t += 1
             actions.append(action)
             total_reward += self.env_wrapper.reward
+            print(self.i,action,total_reward, self.env_wrapper.terminal)
 
             if self.i >= self.config.train_start:
-                if self.i % self.config.test_step == self.config.test_step -1:
+                if self.i % self.config.test_step == self.config.test_step +1:
                     avg_reward = total_reward / self.config.test_step
                     avg_loss = self.total_loss / self.update_count
                     avg_q = self.total_q / self.update_count
