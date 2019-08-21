@@ -45,6 +45,7 @@ class DRQNAgent(BaseAgent):
 
 
     def train(self, steps):
+        f=open('drqn.txt', 'w')
         render = False
         self.env_wrapper.new_random_game()
         num_game, self.update_count, ep_reward = 0,0,0.
@@ -82,7 +83,7 @@ class DRQNAgent(BaseAgent):
             total_reward += self.env_wrapper.reward
 
             if self.i >= self.config.train_start:
-                if self.i % self.config.test_step == self.config.test_step +1:
+                if self.i % self.config.test_step == self.config.test_step - 1:
                     avg_reward = total_reward / self.config.test_step
                     avg_loss = self.total_loss / self.update_count
                     avg_q = self.total_q / self.update_count
@@ -115,6 +116,7 @@ class DRQNAgent(BaseAgent):
                     ep_reward = 0.
                     ep_rewards = []
                     actions = []
+                    f.write(str(avg_ep_reward))
 
             if self.i % 50000 == 0 and self.i > 0:
                 j = 0
@@ -129,7 +131,7 @@ class DRQNAgent(BaseAgent):
                 j += 1
                 if j == 1000:
                     render = False
-
+        f.close()
     def play(self, episodes, net_path):
         self.net.restore_session(path=net_path)
         self.env_wrapper.new_game()
