@@ -44,7 +44,7 @@ class GORUAgent(BaseAgent):
 
 
     def train(self, steps):
-        f=open('goru.txt', 'w')
+        f=open('goru2.txt', 'w')
         render = False
         self.env_wrapper.new_random_game()
         num_game, self.update_count, ep_reward = 0,0,0.
