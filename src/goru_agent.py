@@ -116,7 +116,7 @@ class GORUAgent(BaseAgent):
                     ep_reward = 0.
                     ep_rewards = []
                     actions = []
-                    f.write(avg_ep_reward)
+                    f.write(str(avg_ep_reward))
 
             if self.i % 50000 == 0 and self.i > 0:
                 j = 0

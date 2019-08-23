@@ -10,20 +10,21 @@ class base_config():
 	#....... thats why train starts at 20K?
 	#TRYOUT: Variants as discussed in env_wrapper.py
 	#Note: Need to change hard-coded numbers in dqn.py based on no. of train steps
-	num_colors = 1000
-	grid_dimensions = (60,60)
-	start_coords=(0,0) #Must be tuple-hashable
+	num_colors = 64
+	grid_dimensions = (16,16)
+	start_coords=(8,8) #Must be tuple-hashable
 	grid_maker_random_seed = 0
 	min_reward = 0
 	max_reward = 1.0
 	reward_distribution = 'uniform'
+	reward_noise = None
 
 	train_steps = 10000000
 	batch_size = 64
 	history_len = 1 #4 for Atari
 	epsilon_start = 1.0
 	epsilon_end = 0.02
-	max_steps = 10000
+	max_steps = 100
 	epsilon_decay_episodes_fraction=0.1
 	epsilon_decay_episodes = train_steps*epsilon_decay_episodes_fraction #This is a float
 	train_freq = 8
