@@ -190,10 +190,13 @@ class Grid(object):
 		plt.title('STEP: '+str(self.num_steps))
 		plt.show()
 
+	# @property
+	# def terminal(self):
+	# 	return (self.num_steps+1) % self.max_steps == 0
+
 	@property
 	def terminal(self):
-		return (self.num_steps+1) % self.max_steps == 0
-
+		return (self.num_steps) >= self.max_steps
 
 class GridWorldWrapper(object):
 	
@@ -210,6 +213,7 @@ class GridWorldWrapper(object):
 		self.terminal=False
 		self.reward=0
 		self.action=0
+		self.num_steps=0
 
 	def new_random_game(self):
 		self.new_game()
