@@ -144,6 +144,7 @@ class DQNAgent(BaseAgent):
                 self.net.state : [self.history.get()]
             }, session=self.net.sess)
             action = a[0]
+            actions_list.append(action)
             #Take Action
             self.env_wrapper.act_play(action)
             self.history.add(self.env_wrapper.color)

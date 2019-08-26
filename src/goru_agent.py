@@ -149,6 +149,7 @@ class GORUAgent(BaseAgent):
                 self.net.h_state_train: self.lstm_state_h
             })
             action = a[0]
+            actions_list.append(action)
             if episode_steps==0:
                 print('coords at the start:', self.env_wrapper.coords)
             self.env_wrapper.act_play(action)
