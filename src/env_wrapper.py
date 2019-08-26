@@ -225,6 +225,9 @@ class GridWorldWrapper(object):
 	def act(self, action):
 		self._step(action)
 
+	def act_play(self, action):
+		self._step(action)
+
 	def new_play_game(self):
 		self.new_game()
 
