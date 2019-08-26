@@ -146,6 +146,8 @@ class DRQNAgent(BaseAgent):
                 self.net.c_state_train: self.lstm_state_c,
                 self.net.h_state_train: self.lstm_state_h
             })
+            if episode_steps==0:
+                print('coords at the start:', self.env_wrapper.coords)
             action = a[0]
             self.env_wrapper.act_play(action)
             episode_steps += 1

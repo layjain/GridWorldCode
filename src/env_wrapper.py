@@ -209,11 +209,13 @@ class GridWorldWrapper(object):
 		#Let: 0 action means nothing
 
 	def new_game(self):
+
 		self.coords = self.config.start_coords
 		self.terminal=False
 		self.reward=0
 		self.action=0
-		self.num_steps=0
+		self.env=Grid(self.config)
+		self.env.num_steps=0
 
 	def new_random_game(self):
 		self.new_game()
