@@ -54,6 +54,7 @@ class DQNAgent(BaseAgent):
         total_reward, self.total_loss, self.total_q = 0.,0.,0.
         ep_rewards, actions = [], []
         t = 0
+        print(self.net.number_of_trainable_parameters())
 
         for _ in range(self.config.history_len):
             self.history.add(self.env_wrapper.color)
@@ -132,7 +133,7 @@ class DQNAgent(BaseAgent):
         self.env_wrapper.new_game()
         i = 0
         for _ in range(self.config.history_len):
-            self.history.add(self.env_wrapper.screen)
+            self.history.add(self.env_wrapper.color)
         episode_steps = 0
         ###EDIT (LJ): added rewards calculation
         episode_reward = 0

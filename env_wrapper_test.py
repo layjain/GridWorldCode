@@ -11,7 +11,7 @@ from src.env_wrapper import GridWorldWrapper
 env = GridWorldWrapper(conf)
 
 env.render()
-for a in [0,1,2,3]:
+for a in [0,1,2,3, 1, 1,1,1,1,2,2,2]:
 	print('taking action:', a)
 	env.act(a)
 	env.render()
