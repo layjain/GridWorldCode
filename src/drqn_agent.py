@@ -160,6 +160,7 @@ class DRQNAgent(BaseAgent):
                 print('episode terminated in '+str(episode_steps)+' steps with reward '+str(episode_reward))
                 print('ACTIONS TAKEN:')
                 print(actions_list)
+                actions_list=[]
                 episode_steps = 0
                 episode_reward=0
                 i += 1

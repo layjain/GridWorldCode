@@ -137,6 +137,7 @@ class DQNAgent(BaseAgent):
         episode_steps = 0
         ###EDIT (LJ): added rewards calculation
         episode_reward = 0
+        actions_list=[]
         while i < episodes:
             #Chose Action:
             a = self.net.q_action.eval({
@@ -152,6 +153,9 @@ class DQNAgent(BaseAgent):
                 self.env_wrapper.terminal = True
             if self.env_wrapper.terminal:
                 print('episode terminated in '+str(episode_steps)+' steps with reward '+str(episode_reward))
+                print('ACTIONS TAKEN:')
+                print(actions_list)
+                actions_list=[]
                 d.append(episode_reward)
                 episode_steps = 0
                 episode_reward = 0
