@@ -52,6 +52,7 @@ class DRQNAgent(BaseAgent):
         total_reward, self.total_loss, self.total_q = 0.,0.,0.
         ep_rewards, actions = [], []
         t = 0
+        print(self.net.number_of_trainable_parameters())
         self.color = self.env_wrapper.color
         self.lstm_state_c, self.lstm_state_h = self.net.initial_zero_state_single, self.net.initial_zero_state_single
 

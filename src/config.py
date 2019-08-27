@@ -50,6 +50,6 @@ class base_config():
 
 	num_lstm_layers = 1
 	lstm_size = 512
-	min_history = 4
+	min_history = 16
 	states_to_update = 4
 	mem_size = 800000
