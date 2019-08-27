@@ -229,7 +229,7 @@ class Grid(object):
 			pass
 		###STATE:
 		np.random.seed()
-		self.loc = (np.random.randint(0, self.W+1), np.random.randint(0,self.H+1))
+		self.loc = (np.random.randint(0, self.W), np.random.randint(0,self.H))
 		self.color = self.colors[self.loc]
 		self.reward = 0
 		self.num_steps = 0
