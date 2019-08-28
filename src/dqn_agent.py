@@ -165,4 +165,5 @@ class DQNAgent(BaseAgent):
                 for _ in range(self.config.history_len):
                     color = self.env_wrapper.color
                     self.history.add(color)
-        print([d, sum(d)/len(d)])
+
+        print('ALL, AVERAGE:',[d, sum(d)/len(d)])

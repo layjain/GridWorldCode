@@ -143,6 +143,7 @@ class GORUAgent(BaseAgent):
         #(LJ):ADDED Episode Reward info
         actions_list=[]
         episode_reward=0
+        all_rewards=[]
         while i < episodes:
             a, self.lstm_state_c, self.lstm_state_h = self.net.sess.run([self.net.q_action, self.net.state_output_c, self.net.state_output_h],{
                 self.net.state : [[self.env_wrapper.color]],
@@ -161,6 +162,7 @@ class GORUAgent(BaseAgent):
                 self.env_wrapper.terminal = True
             if self.env_wrapper.terminal:
                 print('episode terminated in '+str(episode_steps)+' steps with reward '+str(episode_reward))
+                all_rewards.append(episode_reward)
                 print('ACTIONS TAKEN:')
                 print(actions_list)
                 actions_list=[]
@@ -169,3 +171,7 @@ class GORUAgent(BaseAgent):
                 i += 1
                 self.env_wrapper.new_play_game()
                 self.lstm_state_c, self.lstm_state_h = self.net.initial_zero_state_single, self.net.initial_zero_state_single
+        print('ALL REWARDS:')
+        print(all_rewards)
+        print('AVERAGE')
+        print(sum(all_rewards)/len(all_rewards))
