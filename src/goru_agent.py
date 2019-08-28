@@ -151,9 +151,10 @@ class GORUAgent(BaseAgent):
             })
             action = a[0]
             actions_list.append(action)
-            ##TEMPORARY CHANGE:
-            self.env_wrapper.env.loc = (8,8)
+
             if episode_steps==0:
+                ##TEMPORARY CHANGE:
+                self.env_wrapper.env.loc = (8,8)
                 print('coords at the start:', self.env_wrapper.env.loc)
             self.env_wrapper.act_play(action)
             episode_steps += 1
