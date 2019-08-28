@@ -47,9 +47,10 @@ class base_config():
 	learning_rate = 0.00025
 	lr_decay = 0.97
 	keep_prob = 0.8
+	num_episodes_for_play_scores_summary=100
 
 	num_lstm_layers = 1
-	lstm_size = 512 #change to 64
+	lstm_size = 64 #original 512
 	min_history = 16
 	states_to_update = 4
 	mem_size = 800000

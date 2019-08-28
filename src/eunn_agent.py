@@ -1,19 +1,18 @@
-
-
 from src.agent import BaseAgent
 from src.replay_memory import DRQNReplayMemory
-from src.networks.drqn import DRQN
+#same replay memory functionality should be used
+from src.networks.eunn_net import EUNN_NETWORK
 import numpy as np
 from tqdm import tqdm
 
-class DRQNAgent(BaseAgent):
+class EUNNAgent(BaseAgent):
 
     def __init__(self, config):
-        super(DRQNAgent, self).__init__(config)
+        super(EUNNAgent, self).__init__(config)
         self.replay_memory = DRQNReplayMemory(config)
-        self.net = DRQN(4, config)
+        self.net = EUNN_NETWORK(4, config)
         self.net.build()
-        self.net.add_summary(["average_reward", "average_loss", "average_q", "ep_max_reward", "ep_min_reward","ep_avg_reward" ,"ep_num_game", "learning_rate", "play_score"], ["ep_rewards", "ep_actions"])
+        self.net.add_summary(["average_reward", "average_loss", "average_q", "ep_max_reward", "ep_min_reward","ep_avg_reward" ,"ep_num_game", "learning_rate"], ["ep_rewards", "ep_actions"])
 
     def observe(self, t):
         reward = max(self.min_reward, min(self.max_reward, self.env_wrapper.reward))
@@ -45,7 +44,7 @@ class DRQNAgent(BaseAgent):
 
 
     def train(self, steps):
-        f=open('drqn2.txt', 'w')
+        f=open('eunn2.txt', 'w')
         render = False
         self.env_wrapper.new_random_game()
         num_game, self.update_count, ep_reward = 0,0,0.
@@ -82,6 +81,7 @@ class DRQNAgent(BaseAgent):
                 t += 1
             actions.append(action)
             total_reward += self.env_wrapper.reward
+            #print(self.i,action,total_reward, self.env_wrapper.terminal)
 
             if self.i >= self.config.train_start:
                 if self.i % self.config.test_step == self.config.test_step - 1:
@@ -124,7 +124,7 @@ class DRQNAgent(BaseAgent):
                 print('saving..')
                 self.save()
                 play_score = self.play(episodes=self.config.num_episodes_for_play_scores_summary, net_path=self.net.dir_model)
-                print('play_score', play_score)
+                print('play_score:', play_score)
                 self.net.inject_summary({'play_score':play_score}, self.i)
             if self.i % 100000 == 0:
                 j = 0
@@ -136,6 +136,7 @@ class DRQNAgent(BaseAgent):
                 if j == 1000:
                     render = False
         f.close()
+
     def play(self, episodes, net_path, verbose=False):
         self.net.restore_session(path=net_path)
         self.env_wrapper.new_game()
@@ -143,8 +144,8 @@ class DRQNAgent(BaseAgent):
         i = 0
         episode_steps = 0
         #(LJ):ADDED Episode Reward info
-        episode_reward=0
         actions_list=[]
+        episode_reward=0
         all_rewards=[]
         while i < episodes:
             a, self.lstm_state_c, self.lstm_state_h = self.net.sess.run([self.net.q_action, self.net.state_output_c, self.net.state_output_h],{
@@ -152,11 +153,11 @@ class DRQNAgent(BaseAgent):
                 self.net.c_state_train: self.lstm_state_c,
                 self.net.h_state_train: self.lstm_state_h
             })
-            if episode_steps==0:
-                if verbose:
-                    print('coords at the start:', self.env_wrapper.env.loc)
             action = a[0]
             actions_list.append(action)
+
+            if episode_steps==0:
+                print('coords at the start:', self.env_wrapper.env.loc)
             self.env_wrapper.act_play(action)
             episode_steps += 1
             episode_reward+=self.env_wrapper.reward
@@ -165,9 +166,9 @@ class DRQNAgent(BaseAgent):
             if self.env_wrapper.terminal:
                 if verbose:
                     print('episode terminated in '+str(episode_steps)+' steps with reward '+str(episode_reward))
-                    print('ACTIONS TAKEN:')
                 all_rewards.append(episode_reward)
                 if verbose:
+                    print('ACTIONS TAKEN:')
                     print(actions_list)
                 actions_list=[]
                 episode_steps = 0

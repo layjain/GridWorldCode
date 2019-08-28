@@ -3,6 +3,7 @@ import json
 import numpy as np
 import tensorflow as tf
 from src.goru import GORUCell
+from src.eunn import EUNNCell
 
 
 def load_config(config_file):
@@ -84,6 +85,13 @@ def stateful_lstm(x, num_layers, lstm_size, state_input, scope_name="lstm"):
 def stateful_goru(x, num_layers, lstm_size, state_input, scope_name="lstm"):
     with tf.variable_scope(scope_name):
         cell = GORUCell(lstm_size)
+        cell = tf.nn.rnn_cell.MultiRNNCell([cell]*num_layers, state_is_tuple=True)
+        outputs, state = tf.nn.dynamic_rnn(cell, x, initial_state=state_input)
+        return outputs, state
+
+def stateful_eunn(x, num_layers, lstm_size, state_input, scope_name="lstm"):
+    with tf.variable_scope(scope_name):
+        cell = EUNNCell(lstm_size)
         cell = tf.nn.rnn_cell.MultiRNNCell([cell]*num_layers, state_is_tuple=True)
         outputs, state = tf.nn.dynamic_rnn(cell, x, initial_state=state_input)
         return outputs, state

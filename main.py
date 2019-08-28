@@ -2,6 +2,7 @@ from src.config import base_config
 from src.dqn_agent import DQNAgent
 from src.drqn_agent import DRQNAgent
 from src.goru_agent import GORUAgent
+from src.eunn_agent import EUNNAgent
 import argparse
 
 class Main():
@@ -15,6 +16,9 @@ class Main():
         elif network_type=='goru':
             print('GORU-DRQN')
             self.agent=GORUAgent(conf)
+        elif network_type=='eunn':
+            print('EUNN-DRQN')
+            self.agent=EUNNAgent(conf)
         else:
             raise ValueError('Incompatible network type '+network_type)
 
@@ -22,7 +26,7 @@ class Main():
         self.agent.train(steps)
 
     def play(self, episodes, net_path):
-        self.agent.play(episodes, net_path)
+        self.agent.play(episodes, net_path, verbose=True)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Parser")

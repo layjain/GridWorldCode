@@ -123,6 +123,9 @@ class GORUAgent(BaseAgent):
                 j = 0
                 print('saving..')
                 self.save()
+                play_score = self.play(episodes=self.config.num_episodes_for_play_scores_summary, net_path=self.net.dir_model)
+                print('play_score:', play_score)
+                self.net.inject_summary({'play_score':play_score}, self.i)
             if self.i % 100000 == 0:
                 j = 0
                 render = True
@@ -134,7 +137,7 @@ class GORUAgent(BaseAgent):
                     render = False
         f.close()
 
-    def play(self, episodes, net_path):
+    def play(self, episodes, net_path, verbose=False):
         self.net.restore_session(path=net_path)
         self.env_wrapper.new_game()
         self.lstm_state_c, self.lstm_state_h = self.net.initial_zero_state_single, self.net.initial_zero_state_single
@@ -161,17 +164,21 @@ class GORUAgent(BaseAgent):
             if episode_steps > self.config.max_steps:
                 self.env_wrapper.terminal = True
             if self.env_wrapper.terminal:
-                print('episode terminated in '+str(episode_steps)+' steps with reward '+str(episode_reward))
+                if verbose:
+                    print('episode terminated in '+str(episode_steps)+' steps with reward '+str(episode_reward))
                 all_rewards.append(episode_reward)
-                print('ACTIONS TAKEN:')
-                print(actions_list)
+                if verbose:
+                    print('ACTIONS TAKEN:')
+                    print(actions_list)
                 actions_list=[]
                 episode_steps = 0
                 episode_reward=0
                 i += 1
                 self.env_wrapper.new_play_game()
                 self.lstm_state_c, self.lstm_state_h = self.net.initial_zero_state_single, self.net.initial_zero_state_single
-        print('ALL REWARDS:')
-        print(all_rewards)
-        print('AVERAGE')
-        print(sum(all_rewards)/len(all_rewards))
+        if verbose:
+            print('ALL REWARDS:')
+            print(all_rewards)
+            print('AVERAGE')
+            print(sum(all_rewards)/len(all_rewards))
+        return sum(all_rewards)/len(all_rewards)
