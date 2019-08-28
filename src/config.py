@@ -49,7 +49,7 @@ class base_config():
 	keep_prob = 0.8
 
 	num_lstm_layers = 1
-	lstm_size = 512
+	lstm_size = 512 #change to 64
 	min_history = 16
 	states_to_update = 4
 	mem_size = 800000

@@ -149,7 +149,7 @@ class DRQNAgent(BaseAgent):
                 self.net.h_state_train: self.lstm_state_h
             })
             if episode_steps==0:
-                print('coords at the start:', self.env_wrapper.coords)
+                print('coords at the start:', self.env_wrapper.env.loc)
             action = a[0]
             actions_list.append(action)
             self.env_wrapper.act_play(action)
