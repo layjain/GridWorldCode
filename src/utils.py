@@ -91,7 +91,7 @@ def stateful_goru(x, num_layers, lstm_size, state_input, scope_name="lstm"):
 
 def stateful_eunn(x, num_layers, lstm_size, state_input, scope_name="lstm"):
     with tf.variable_scope(scope_name):
-        cell = EUNNCell(lstm_size)
+        cell = EUNNCell(lstm_size, cplex=False)
         cell = tf.nn.rnn_cell.MultiRNNCell([cell]*num_layers, state_is_tuple=True)
         outputs, state = tf.nn.dynamic_rnn(cell, x, initial_state=state_input)
         return outputs, state

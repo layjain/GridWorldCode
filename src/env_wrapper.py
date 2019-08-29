@@ -185,6 +185,69 @@ class Grid2(object):
 		return (self.num_steps) >= self.max_steps
 
 
+class MarkovGrid(object):
+	'''
+	Each location has a reward info, the "color" is [left, up, right, down reward]
+	Generate a grid object, with associated reward, color, coordinates
+	Color related to reward, start at start_coords
+	'''
+
+	def __init__(self, config):
+		self.W, self.H = config.grid_dimensions
+		self.num_colors = 4
+		self.action_space = [0,1,2,3]
+		self.empty_color = [0 for _ in range(self.num_colors)]
+		self.max_steps = config.max_steps
+		self.info={}
+		seed = config.grid_maker_random_seed
+		np.random.seed(seed)
+		self.coords = [(a,b) for a in range(self.W) for b in range(self.H)]
+		self.coords_set = set(self.coords)
+		self.rewards = {coord : float(np.random.uniform(config.min_reward, config.max_reward)) for coord in self.coords}
+		self.colors = {coord : [self.rewards.get((coord[0]-1, coord[1]), self.rewards[coord]),\
+								self.rewards.get((coord[0], coord[1]+1), self.rewards[coord]),\
+								self.rewards.get((coord[0]+1, coord[1]), self.rewards[coord]),\
+								self.rewards.get((coord[0], coord[1]-1), self.rewards[coord])]\
+					 for coord in self.coords}
+		###STATE:
+		self.loc = config.start_coords
+		self.color = self.colors[self.loc]
+		self.reward = 0
+		self.num_steps = 0
+		###
+		self.action_changes =[(-1, 0), (0, 1), (1, 0), (0, -1)] #translations
+
+
+	def __eq__(self, g):
+		truth = (self.coords_set == g.coords_set) and (self.colors==g.colors) and (self.rewards==g.rewards)
+		return truth
+
+	def step(self, action):
+		change = self.action_changes[action]
+		self.num_steps+=1
+		loc = self.loc
+		new_loc = (loc[0] + change[0], loc[1] + change[1])
+		if new_loc in self.coords_set:
+			self.loc = new_loc
+			self.reward = self.rewards[new_loc]
+			self.color = self.colors[new_loc]
+			#REWARD GIVEN WHILE ENTERIMNG THE NEW LOCATION
+			#TRYOUT: Exiting
+			return [self.color, self.reward, self.terminal, self.info]
+		else:
+			# ZERO REWARD FOR TAKING ACTION THAT LEADS TO NO-WHERE
+			# DISCUSS AND TRYOUT OTHER VARIANTS
+			# CHANGE NUM_STEPS??
+			# self.reward = 0
+			self.color = self.colors[loc]
+			return [self.color, self.reward, self.terminal, self.info]
+
+
+	@property
+	def terminal(self):
+		return (self.num_steps) >= self.max_steps
+
+
 class Grid(object):
 	'''
 	Generate a grid object, with associated reward, color, coordinates
@@ -286,13 +349,14 @@ class Grid(object):
 	def terminal(self):
 		return (self.num_steps) >= self.max_steps
 
+
 class GridWorldWrapper(object):
 	
 	def __init__(self, config):
 		#self.start_coords = (np.random.randint(0, self.W+1), np.random.randint(0,self.H+1))
 		self.config = config
 		self.W, self.H = config.grid_dimensions
-		self.env = Grid(config)
+		self.env = MarkovGrid(config)
 		#self.coords = self.env.loc
 		#Let: 0 action means nothing
 

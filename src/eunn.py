@@ -305,7 +305,7 @@ class EUNNCell(rnn_cell_impl.RNNCell):
 
     def __call__(self, inputs, state, scope=None):
         with tf.variable_scope(scope or "eunn_cell"):
-
+            state = state.h
             inputs_size = inputs.get_shape()[-1]
 
             # state = _eunn_loop(state, self._capacity, self.diag_vec, self.off_vec, self.diag, self._fft)
@@ -333,4 +333,4 @@ class EUNNCell(rnn_cell_impl.RNNCell):
                     initializer=tf.constant_initializer())
             output = self._activation((inputs + state), bias, self._cplex)
 
-        return output, output
+        return output, tf.nn.rnn_cell.LSTMStateTuple(output, output)
