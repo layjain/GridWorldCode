@@ -12,7 +12,7 @@ class EUNNAgent(BaseAgent):
         self.replay_memory = DRQNReplayMemory(config)
         self.net = EUNN_NETWORK(4, config)
         self.net.build()
-        self.net.add_summary(["average_reward", "average_loss", "average_q", "ep_max_reward", "ep_min_reward","ep_avg_reward" ,"ep_num_game", "learning_rate", "play_score"], ["ep_rewards", "ep_actions"])
+        self.net.add_summary(["average_reward", "average_loss", "average_q", "ep_max_reward", "ep_min_reward","ep_avg_reward" ,"ep_num_game", "learning_rate"], ["ep_rewards", "ep_actions"])
 
     def observe(self, t):
         reward = max(self.min_reward, min(self.max_reward, self.env_wrapper.reward))
@@ -123,9 +123,6 @@ class EUNNAgent(BaseAgent):
                 j = 0
                 print('saving..')
                 self.save()
-                play_score = self.play(episodes=self.config.num_episodes_for_play_scores_summary, net_path=self.net.dir_model)
-                print('play_score:', play_score)
-                self.net.inject_summary({'play_score':play_score}, self.i)
             if self.i % 100000 == 0:
                 j = 0
                 render = True

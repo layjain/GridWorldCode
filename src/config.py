@@ -10,7 +10,7 @@ class base_config():
 	#....... thats why train starts at 20K?
 	#TRYOUT: Variants as discussed in env_wrapper.py
 	#Note: Need to change hard-coded numbers in dqn.py based on no. of train steps
-	num_colors = 4
+	num_colors = 64
 	grid_dimensions = (16,16)
 	start_coords=(8,8) #Must be tuple-hashable
 	grid_maker_random_seed = 0

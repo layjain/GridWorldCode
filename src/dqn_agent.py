@@ -13,7 +13,7 @@ class DQNAgent(BaseAgent):
         self.replay_memory = DQNReplayMemory(config)
         self.net = DQN(4, config)
         self.net.build()
-        self.net.add_summary(["average_reward", "average_loss", "average_q", "ep_max_reward", "ep_avg_reward","ep_min_reward", "ep_num_game", "learning_rate", "play_score"], ["ep_rewards", "ep_actions"])
+        self.net.add_summary(["average_reward", "average_loss", "average_q", "ep_max_reward", "ep_avg_reward","ep_min_reward", "ep_num_game", "learning_rate"], ["ep_rewards", "ep_actions"])
 
     def observe(self):
         reward = max(self.min_reward, min(self.max_reward, self.env_wrapper.reward))

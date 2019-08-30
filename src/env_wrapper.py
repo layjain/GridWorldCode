@@ -356,7 +356,7 @@ class GridWorldWrapper(object):
 		#self.start_coords = (np.random.randint(0, self.W+1), np.random.randint(0,self.H+1))
 		self.config = config
 		self.W, self.H = config.grid_dimensions
-		self.env = MarkovGrid(config)
+		self.env = Grid(config)
 		#self.coords = self.env.loc
 		#Let: 0 action means nothing
 
@@ -365,7 +365,7 @@ class GridWorldWrapper(object):
 		self.terminal=False
 		self.reward=0
 		self.action=0
-		self.env=MarkovGrid(self.config)
+		self.env= Grid(self.config)
 		#elf.coords = self.env.loc
 		self.env.num_steps=0
 
