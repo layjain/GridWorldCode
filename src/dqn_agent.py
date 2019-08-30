@@ -116,8 +116,8 @@ class DQNAgent(BaseAgent):
                 j = 0
                 print('saving..')
                 self.save()
-                play_score = self.play(episodes=self.config.num_episodes_for_play_scores_summary, net_path=self.net.dir_model)
-                self.net.inject_summary({'play_score':play_score}, self.i)
+                #play_score = self.play(episodes=self.config.num_episodes_for_play_scores_summary, net_path=self.net.dir_model)
+                #self.net.inject_summary({'play_score':play_score}, self.i)
             if self.i % 100000 == 0:
                 j = 0
                 render = True
